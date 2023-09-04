@@ -72,8 +72,8 @@ export const getBySearch = async (fromDate: any, toDate: any, city: any, region:
     );
 
     if (properties) {
-      const searchFrom = formatToDateObj(fromDate);
-      const searchTo = formatToDateObj(toDate);
+      const searchFrom = moment(formatToDateObj(fromDate));
+      const searchTo = moment(formatToDateObj(toDate));
 
       matches = properties.filter((property) => {
         const fromAsDate = formatToDateObj(property.dateFrom);
@@ -82,21 +82,21 @@ export const getBySearch = async (fromDate: any, toDate: any, city: any, region:
         if (region) {
           if (region?.toLowerCase() === 'worldwide') {
             return (
-              moment(fromAsDate).isSameOrAfter(searchFrom) &&
-              moment(toAsDate).isSameOrBefore(searchTo)
+              moment(fromAsDate).isSameOrBefore(searchFrom) &&
+              moment(toAsDate).isSameOrAfter(searchTo)
             )
           }
 
           return (
-            moment(fromAsDate).isSameOrAfter(searchFrom) &&
-            moment(toAsDate).isSameOrBefore(searchTo) &&
+            moment(fromAsDate).isSameOrBefore(searchFrom) &&
+            moment(toAsDate).isSameOrAfter(searchTo) &&
             property.region.toLowerCase() === region.toLowerCase()
-          )
+          );
         }
  
         return (
-          moment(fromAsDate).isSameOrAfter(searchFrom) &&
-          moment(toAsDate).isSameOrBefore(searchTo) &&
+          moment(fromAsDate).isSameOrBefore(searchFrom) &&
+          moment(toAsDate).isSameOrAfter(searchTo) &&
           property.city.toLowerCase() === city.toLowerCase()
         );
       });
